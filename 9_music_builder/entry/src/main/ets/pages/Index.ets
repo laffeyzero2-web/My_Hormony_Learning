@@ -4,7 +4,7 @@ export interface SongItemType {
   author: string
 }
 @Entry
-@Component
+@ComponentV2
 struct Index {
   songs: SongItemType[] = [
     {
@@ -89,9 +89,94 @@ struct Index {
       author: 'Beyond',
     }
   ]
-
+  @Local play_index : number = -1
   build() {
+    Column(){
+      Text('猜你喜欢')
+        .fontColor(Color.White)
+        .width('100%')
+        .padding({
+          left : 10
+        })
+      List(){
+        ForEach(this.songs , (items : SongItemType , index : number) => {
+          ListItem() {
+            Row() {
+              // 音乐图标
+              Stack(){
+                Image(items.img)
+                  .width(80)
+                  .height(80)
+                  .border({radius : 20})
+                if (this.play_index === index) {
+                  Image($r("app.media.wave_icon"))
+                    .width(75)
+                }
+              }
+              // 文字内容
+              Column(){
+                Text(items.name)
+                  .fontColor(Color.White)
+                  .fontSize(20)
+                  .width('100%')
+                  .padding({
+                    left : 10
+                  })
+                Row(){
+                  Text("VIP")
+                    .padding({
+                      left : 5,
+                      top : 2,
+                      bottom : 2,
+                      right : 5
+                    })
+                    .margin({
+                      top : 10
+                    })
+                    .border({})
+                    .borderStyle(BorderStyle.Solid)
+                    .borderRadius('50.00')
+                    .backgroundImageSize(ImageSize.Auto)
+                    .borderWidth('2')
+                    .borderColor('#9A8E28')
+                    .backgroundImagePosition(Alignment.Center)
+                    .fontColor("#9A8E28")
+                    .margin({ top: '10.00vp', right: '0.00vp', bottom: '0.00vp', left: '10.00vp' })
 
-
+                  Text(items.author)
+                    .fontColor(Color.White)
+                    .width('100%')
+                    .margin({
+                      left : 10,
+                      top : 10
+                    })
+                }
+              }
+              .layoutWeight(1)
+              // 更多
+              Image($r('app.media.more'))
+                .height(40)
+                .fillColor(Color.Gray)
+            }
+            .width('100%')
+            .height(80)
+            .backgroundColor(Color.Black)
+            .onClick(() => {
+              this.play_index = index
+            })
+          }
+          .padding({
+            top : 10
+          })
+        })
+      }
+      .scrollBar(BarState.Off)
+      .width('100%')
+      .height('100%')
+    }
+    .width('100%')
+    .height('100%')
+    .background(Color.Black)
+    // .expandSafeArea([SafeAreaType.SYSTEM],[SafeAreaEdge.TOP,SafeAreaEdge.BOTTOM])
   }
 }
